@@ -10,6 +10,9 @@ public class ProcessControlBlock {
     private ArrayList<Integer> stopTimes;  // when the process stops running
     
     private static int pidTotal= 0;
+
+    // Total runtime of the process until its last suspension (state changed from RUNNING to READY or TERMINATED).
+    private int currentTotalTimeRunBeforeSuspended;
     
     public ProcessControlBlock() {
         this.state = ProcessState.NEW;
@@ -18,8 +21,10 @@ public class ProcessControlBlock {
         /* TODO: you need to add some code here
          * Hint: every process should get a unique PID */
         this.pid = 0; // change this line
-        
+        currentTotalTimeRunBeforeSuspended =0;
     }
+
+
 
     public ProcessState getState() {
         return this.state;
@@ -29,10 +34,19 @@ public class ProcessControlBlock {
         /* TODO: you need to add some code here
          * Hint: update this.state, but also include currentClockTime
          * in startTimes/stopTimes */
-        
+
+        // Every time this process's execution is halted, the current total running time is computed and stored.
+        if (this.state==ProcessState.RUNNING && state!=ProcessState.RUNNING){
+            int previousHaltTime = stopTimes.isEmpty()?0:stopTimes.get(stopTimes.size()-1); // Get the timestamp of the previous halt.
+            currentClockTime += currentClockTime - previousHaltTime;
+        }
     }
-    
-    public int getPid() { 
+
+    public int getCurrentTotalTimeRunBeforeSuspended() {
+        return currentTotalTimeRunBeforeSuspended;
+    }
+
+    public int getPid() {
         return this.pid;
     }
     

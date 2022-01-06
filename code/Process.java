@@ -15,7 +15,11 @@ public class Process {
     public ProcessControlBlock getPCB() {
         return this.pcb;
     }
-   
+
+    public int getBurstTime() {
+        return burstTime;
+    }
+
     public void run() {
         /* TODO: you need to add some code here
          * Hint: this should run every time a process starts running */
