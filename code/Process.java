@@ -1,11 +1,12 @@
-
-public class Process {
+public class Process
+{
     private ProcessControlBlock pcb;
     private int arrivalTime;
     private int burstTime;
     private int memoryRequirements;
     
-    public Process(int arrivalTime, int burstTime, int memoryRequirements) {
+    public Process(int arrivalTime, int burstTime, int memoryRequirements)
+    {
         this.arrivalTime = arrivalTime;
         this.burstTime = burstTime;
         this.memoryRequirements = memoryRequirements;
@@ -14,6 +15,11 @@ public class Process {
     
     public ProcessControlBlock getPCB() {
         return this.pcb;
+    }
+
+    public int getMemoryRequirements()
+    {
+        return this.memoryRequirements;
     }
 
     public int getBurstTime() {
@@ -32,21 +38,31 @@ public class Process {
         
     }
 
-    public double getWaitingTime() {
+    public double getWaitingTime()
+    {
         /* TODO: you need to add some code here
          * and change the return value */
-        return 0;
+        double waitingTime= getTurnAroundTime()-this.burstTime;
+        return waitingTime;
     }
-    
-    public double getResponseTime() {
+
+    public double getResponseTime()
+    {
         /* TODO: you need to add some code here
          * and change the return value */
-        return 0;
+        double responseTime=getPCB().getStartTimes().get(0)-this.arrivalTime;
+        return responseTime;
     }
-    
-    public double getTurnAroundTime() {
+
+    public double getTurnAroundTime()
+    {
         /* TODO: you need to add some code here
          * and change the return value */
-        return 0;
+        double turnAroundTime=-1;
+        if (getPCB().getState().equals(ProcessState.TERMINATED))
+        {
+            turnAroundTime=getPCB().getStopTimes().get(getPCB().getStopTimes().size()-1)-this.arrivalTime;
+        }
+        return turnAroundTime;
     }
 }
