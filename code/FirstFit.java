@@ -17,11 +17,11 @@ public class FirstFit extends MemoryAllocationAlgorithm
         {
 
             int sizeOfAvailableBlockOfSLot= memorySlot.getEnd()-memorySlot.getStart();
-            if ((sizeOfAvailableBlockOfSLot>=p.getMemoryRequirements()) && (p.getPCB().getState().equals(ProcessState.NEW)))
+            if ((sizeOfAvailableBlockOfSLot>=p.getMemoryRequirements()))
             {
                 fit = true;
                 address = memorySlot.getStart();
-                currentlyUsedMemorySlots.get(counterOfPlaceInArraylistCurrenltyUsedMemorySlots).setStart(memorySlot.getStart()+p.getMemoryRequirements());
+                //currentlyUsedMemorySlots.get(counterOfPlaceInArraylistCurrenltyUsedMemorySlots).setStart(memorySlot.getStart()+p.getMemoryRequirements());
                 break;
             }
             counterOfPlaceInArraylistCurrenltyUsedMemorySlots++;

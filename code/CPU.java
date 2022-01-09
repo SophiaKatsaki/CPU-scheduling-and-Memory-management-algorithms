@@ -15,16 +15,6 @@ public class CPU
         this.processes = processes;
     }
 
-    public void setCurrentProcess(int currentProcess)
-    {
-        this.currentProcess=currentProcess;
-    }
-
-    public int getCurrentProcess()
-    {
-        return this.currentProcess;
-    }
-    
     public void run()
     {
         /* TODO: you need to add some code here

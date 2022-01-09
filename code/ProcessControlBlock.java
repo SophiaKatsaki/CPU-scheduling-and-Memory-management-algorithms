@@ -44,10 +44,6 @@ public class ProcessControlBlock
             int previousHaltTime = stopTimes.isEmpty()?0:stopTimes.get(stopTimes.size()-1); // Get the timestamp of the previous halt.
             currentClockTime += currentClockTime - previousHaltTime;
         }
-        if ((this.state==ProcessState.NEW) && (state==ProcessState.READY))
-        {
-            this.state=ProcessState.READY;
-        }
     }
 
     public int getCurrentTotalTimeRunBeforeSuspended() {

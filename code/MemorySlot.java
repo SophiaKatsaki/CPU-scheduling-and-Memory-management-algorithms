@@ -1,6 +1,6 @@
 
-public class MemorySlot {
-
+public class MemorySlot
+{
     private int start; // the address where the memory slot starts
     private int end;   // the address where the memory slot ends
     private final int blockStart; // address of where the block starts
