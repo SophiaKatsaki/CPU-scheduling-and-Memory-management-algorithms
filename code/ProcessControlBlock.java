@@ -9,11 +9,11 @@ public class ProcessControlBlock
     // for statistical purposes
     private ArrayList<Integer> startTimes; // when the process starts running
     private ArrayList<Integer> stopTimes;  // when the process stops running
-    
+
     private static int pidTotal= 0;
 
-    // Total runtime of the process until its last suspension (state changed from RUNNING to READY or TERMINATED).
-    private int currentTotalTimeRunBeforeSuspended;
+    // Current total runtime of the process.
+    private int currentTotalTimeRun;
     
     public ProcessControlBlock()
     {
@@ -23,7 +23,7 @@ public class ProcessControlBlock
         /* TODO: you need to add some code here
          * Hint: every process should get a unique PID */
         this.pid = 0; // change this line
-        currentTotalTimeRunBeforeSuspended =0;
+        currentTotalTimeRun =0;
     }
 
 
@@ -46,8 +46,12 @@ public class ProcessControlBlock
         }
     }
 
-    public int getCurrentTotalTimeRunBeforeSuspended() {
-        return currentTotalTimeRunBeforeSuspended;
+    public int getCurrentTotalTimeRun() {
+        return currentTotalTimeRun;
+    }
+
+    public void setCurrentTotalTimeRun(int currentTotalTimeRun) {
+        this.currentTotalTimeRun = currentTotalTimeRun;
     }
 
     public int getPid() {
