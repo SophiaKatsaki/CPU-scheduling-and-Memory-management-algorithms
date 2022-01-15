@@ -29,8 +29,15 @@ public class RoundRobin extends Scheduler {
     public Process getNextProcess() {
         // If there is a currently running process.
         if (runningProcess != null){
-            // If it has finished, it is halted
-            if (runningProcess.getBurstTime() == runningProcess.getPCB().getCurrentTotalTimeRun()) {
+            // The first process in processes queue should always be the (previously) running process.
+            // If it is not or the process queue is empty, means that the runningProcess process has been removed by removeProcess
+            //  and the running process should be disregarded.
+            if (processes.isEmpty() || runningProcess.getPCB().getPid() != processes.get(0).getPCB().getPid()){
+                runningProcess = null;
+                remainingQuantumTime = quantum;
+            }
+            // If the running process has finished its burst time, it's halted
+            else if (runningProcess.getBurstTime() == runningProcess.getPCB().getCurrentTotalTimeRun()) {
                 processes.remove(0); // Remove the running (should be the first in the ready queue) process.
                 runningProcess.waitInBackground(); // Terminate old process.
 
