@@ -14,23 +14,10 @@ public class SRTF extends Scheduler {
     }
     
     public Process getNextProcess() {
-        /* TODO: you need to add some code here
-         * and change the return value */
 
-        if(runningProcess == null){// No process running, get the next available from the readyQueue.
-            if (processes.isEmpty()){ // If the readyQueue is empty, then return null.
-                return null; //no process to be executed
-            }
-            else { // Setting the process next in line as running one and returning it.
-                runningProcess = processes.get(0);
-                incrementTimeRun(runningProcess); // Update currently running process' total time run.
-                return runningProcess;
-            }
-        }
-        else {
             // If it has finished, then it is halted
-            if (runningProcess.getBurstTime() == runningProcess.getPCB().getCurrentTotalTimeRun()) {
-                processes.remove(runningProcess); // Remove the running process.
+            if (runningProcess != null && runningProcess.getBurstTime() == runningProcess.getPCB().getCurrentTotalTimeRun()) {
+                removeProcess(runningProcess); // Remove the running process.
                 runningProcess.waitInBackground(); // Terminate old process.
                 runningProcess = null; // Initialization for the next process
             }
@@ -51,8 +38,6 @@ public class SRTF extends Scheduler {
             else { // if readyQueue is empty, then there is no process to be executed
                 return null;
             }
-        }
-
     }
 
     /*
