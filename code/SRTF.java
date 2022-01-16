@@ -4,15 +4,11 @@ public class SRTF extends Scheduler {
     private Process runningProcess;
 
     public SRTF() {
-        /* TODO: you _may_ need to add some code here */
-
-        // Default values
+        // Initialization of runningProcess to default null.
         runningProcess = null;
     }
 
     public void addProcess(Process p) {
-        /* TODO: you need to add some code here */
-
         // The new process is just added in the end of the queue.
         processes.add(p);
     }

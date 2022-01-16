@@ -37,13 +37,6 @@ public class ProcessControlBlock
         /* TODO: you need to add some code here
          * Hint: update this.state, but also include currentClockTime
          * in startTimes/stopTimes */
-
-        // Every time this process's execution is halted, the current total running time is computed and stored.
-        if (this.state==ProcessState.RUNNING && state!=ProcessState.RUNNING)
-        {
-            int previousHaltTime = stopTimes.isEmpty()?0:stopTimes.get(stopTimes.size()-1); // Get the timestamp of the previous halt.
-            currentClockTime += currentClockTime - previousHaltTime;
-        }
     }
 
     public int getCurrentTotalTimeRun() {
