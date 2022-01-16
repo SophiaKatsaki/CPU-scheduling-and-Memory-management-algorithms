@@ -4,7 +4,7 @@ public class Process
     private int arrivalTime;
     private int burstTime;
     private int memoryRequirements;
-
+    
     public Process(int arrivalTime, int burstTime, int memoryRequirements)
     {
         this.arrivalTime = arrivalTime;
@@ -12,7 +12,7 @@ public class Process
         this.memoryRequirements = memoryRequirements;
         this.pcb = new ProcessControlBlock();
     }
-
+    
     public ProcessControlBlock getPCB() {
         return this.pcb;
     }
@@ -26,24 +26,37 @@ public class Process
         return burstTime;
     }
 
-    public void run() {
-        /* TODO: you need to add some code here
-         * Hint: this should run every time a process starts running */
+    public void run()
+    {
+        /* Every time a process starts running, the state of the process is set
+         * to RUNNING*/
+        this.pcb.setState(ProcessState.RUNNING, CPU.clock);
 
     }
 
     public void waitInBackground()
     {
-        /* TODO: you need to add some code here
-         * Hint: this should run every time a process stops running */
+        /*If the burst time of the process is equal to its total runtime,
+        the state of said process is set to TERMINATED. Else, the state of
+        the process is set to READY,once again. */
+
+        if (this.pcb.getCurrentTotalTimeRunBeforeSuspended()==this.burstTime)
+        {
+            this.pcb.setState(ProcessState.TERMINATED, CPU.clock);
+        }
+        else
+        {
+            this.pcb.setState(ProcessState.READY, CPU.clock);
+        }
+
 
     }
 
     public double getWaitingTime()
     {
-        /* The waiting time of a process is the total time spent by the process
-        waiting for CPU.It is calculated by substracting the burst time
-        *of the certain process from its turnaround time*/
+     /* The waiting time of a process is the total time spent by the process
+     waiting for CPU.It is calculated by substracting the burst time
+     *of the certain process from its turnaround time*/
 
         double waitingTime= getTurnAroundTime()-this.burstTime;
         return waitingTime;
@@ -63,11 +76,11 @@ public class Process
     public double getTurnAroundTime()
     {
         /* The turn around time of a process is the time interval from the time of
-         * arrival of the process to the time of the completion of said process. It is
-         * calculated by substracting the arrival time of the process from the time that
-         * the certain process was completed. Here, turnaround time is by default set to -1,
-         * in case the process that we want to calculate its turn around time, is not
-         * completed yet, and therefore its state is not equal to TERMINATED.
+        * arrival of the process to the time of the completion of said process. It is
+        * calculated by substracting the arrival time of the process from the time that
+        * the certain process was completed. Here, turnaround time is by default set
+        * to -1, in case the process that we want to calculate its turn around time,
+        * is not completed yet, and therefore its state is not equal to TERMINATED.
         */
 
         double turnAroundTime=-1;
