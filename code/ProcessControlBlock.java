@@ -2,7 +2,6 @@ import java.util.ArrayList;
 
 public class ProcessControlBlock
 {
-    
     private final int pid;
     private ProcessState state;
     // the following two ArrayLists should record when the process starts/stops
@@ -14,24 +13,25 @@ public class ProcessControlBlock
 
     // Total runtime of the process until its last suspension (state changed from RUNNING to READY or TERMINATED).
     private int currentTotalTimeRunBeforeSuspended;
-    
+
+
     public ProcessControlBlock()
     {
         this.state = ProcessState.NEW;
         this.startTimes = new ArrayList<Integer>();
         this.stopTimes = new ArrayList<Integer>();
-        /* TODO: you need to add some code here
-         * Hint: every process should get a unique PID */
-        this.pid = 0; // change this line
+        //increasing the number of processes arrived by incrementing pidtotal
+        pidTotal++;
+        //the unique pid for every process is basically the order of its arrival
+        this.pid = pidTotal;
         currentTotalTimeRunBeforeSuspended =0;
     }
-
-
 
     public ProcessState getState() {
         return this.state;
     }
-    
+
+
     public void setState(ProcessState state, int currentClockTime)
     {
         /* TODO: you need to add some code here
