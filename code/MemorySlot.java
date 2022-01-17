@@ -8,7 +8,9 @@ public class MemorySlot
     /* The following should always hold true:
      * start >= blockStart
      * end <= blockEnd */
-    
+
+    private Process processAssociated; // It stores a reference to the process that uses this memory slot.
+
     public MemorySlot(int start, int end, int blockStart, int blockEnd) {
         if ((start < blockStart) || (end > blockEnd)) {
             throw new java.lang.RuntimeException("Memory access out of bounds.");
@@ -43,4 +45,11 @@ public class MemorySlot
         this.end = end;
     }
 
+    public Process getProcessAssociated() {
+        return processAssociated;
+    }
+
+    public void setProcessAssociated(Process processAssociated) {
+        this.processAssociated = processAssociated;
+    }
 }
