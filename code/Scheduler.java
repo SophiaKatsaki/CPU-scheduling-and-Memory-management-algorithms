@@ -3,6 +3,10 @@ import java.util.ArrayList;
 public abstract class Scheduler {
 
     protected ArrayList<Process> processes; // the list of processes to be executed
+
+    // A flag variable that defines if we should check for a New Process in every Clock Cycle
+    // Its value depends on the scheduling algorithm that is being used
+    protected boolean checksEveryCycleForNewProcesses;
     
     public Scheduler() {
         this.processes = new ArrayList<Process>();

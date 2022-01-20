@@ -14,6 +14,8 @@ public class RoundRobin extends Scheduler {
         // Default values
         runningProcess = null;
         remainingQuantumTime = 0;
+        checksEveryCycleForNewProcesses = false;
+        lastSeenTime = 0;
     }
     
     public RoundRobin(int quantum) {

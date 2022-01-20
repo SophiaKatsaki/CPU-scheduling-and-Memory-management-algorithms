@@ -17,6 +17,10 @@ public class Process
         return this.pcb;
     }
 
+    public int getArrivalTime() {
+        return arrivalTime;
+    }
+
     public int getMemoryRequirements()
     {
         return this.memoryRequirements;

@@ -8,6 +8,7 @@ public class FCFS extends Scheduler {
     public FCFS() {
         // Initialize the currentProcess to default null value (we start without a process).
         this.currentProcess = null;
+        checksEveryCycleForNewProcesses = false;
     }
 
     /**
@@ -41,15 +42,11 @@ public class FCFS extends Scheduler {
             }
         }
 
-        // Checking if exist more processes in the queue and gets the first one that has come as the fcfs algorithm
-        // indicates. Else there are not any other processes in the queue and the null value is been returned.
+        // Checking if more processes exist in the Ready queue and gets the first one that has come as the fcfs algorithm
+        // indicates.
+        // Else there are not any other processes in the queue and the null value is being returned.
         if (!processes.isEmpty()) {
             this.currentProcess = processes.get(0);
-
-            // Updating the time from the current running process by increasing by 1.
-            this.currentProcess.getPCB().setCurrentTotalTimeRun(
-                    this.currentProcess.getPCB().getCurrentTotalTimeRun() + 1);
-
             return this.currentProcess;
         } else {
             return null;
