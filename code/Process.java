@@ -28,29 +28,49 @@ public class Process
 
     public void run()
     {
-        /* Every time a process starts running, the state of the process is set
-         * to RUNNING*/
-        this.pcb.setState(ProcessState.RUNNING, CPU.clock);
+        /*There is the need to check if the current state of
+        * the process is READY, in order for the process to start
+        * running.
+        * */
+
+        if (this.pcb.getState().equals(ProcessState.READY))
+        {
+            /* Every time a process starts running, the state of the process is set
+             * to RUNNING.*/
+
+            this.pcb.setState(ProcessState.RUNNING, CPU.clock);
+        }
+
 
     }
 
     public void waitInBackground()
     {
-        /*If the burst time of the process is equal to its total runtime,
-        the state of said process is set to TERMINATED. Else, the state of
-        the process is set to READY,once again. */
+        /*Firstly,there is the need to check that the state of the process is
+        indeed RUNNING*/
 
-        if (this.pcb.getCurrentTotalTimeRunBeforeSuspended()==this.burstTime)
+        if (this.pcb.getState().equals(ProcessState.RUNNING))
         {
-            this.pcb.setState(ProcessState.TERMINATED, CPU.clock);
-        }
-        else
-        {
-            this.pcb.setState(ProcessState.READY, CPU.clock);
-        }
+            /*If the burst time of the process is equal to its total runtime,
+            the state of said process is set to TERMINATED.
+            */
 
+            if (this.pcb.getCurrentTotalTimeRun()==this.burstTime)
+            {
+                this.pcb.setState(ProcessState.TERMINATED, CPU.clock);
+            }
+
+            /*Else, the state of
+            the process is set to READY,once again.*/
+
+            else
+            {
+                this.pcb.setState(ProcessState.READY, CPU.clock);
+            }
+        }
 
     }
+
 
     public double getWaitingTime()
     {
