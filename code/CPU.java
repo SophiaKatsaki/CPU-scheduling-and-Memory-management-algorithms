@@ -67,7 +67,7 @@ public class CPU
                 incrementTimeRun(currentProcess); // Update currently running process's total time run.
                 tick();
 
-            } while (currentProcess == null && processesList.isEmpty()); // no processes in readyQueue neither in newQueue
+            } while (!(currentProcess == null && processesList.isEmpty())); // no processes in readyQueue neither in newQueue
         }
         else {
             do {
