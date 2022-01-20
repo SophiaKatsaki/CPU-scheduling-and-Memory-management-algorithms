@@ -14,7 +14,7 @@ public class FirstFit extends MemoryAllocationAlgorithm
 
        The address is by default set to -1, in case the process does not fit in any of the slots in the memory
        slots, and changes its value if the process does fit a slot.
-       The address then, is set to the start adress of the certain available slot.
+       The address then, is set to the start address of the certain available slot.
     */
 
     public int fitProcess(Process p, ArrayList<MemorySlot> currentlyUsedMemorySlots)
@@ -25,21 +25,22 @@ public class FirstFit extends MemoryAllocationAlgorithm
         */
         int address = -1;
 
-        int counterOfPlaceInArraylistCurrenltyUsedMemorySlots=0;
-        for (MemorySlot memorySlot:currentlyUsedMemorySlots)
+        // Get the current available memory state.
+        ArrayList<MemorySlot> availableSlots = this.mapAvailableMemory(currentlyUsedMemorySlots);
+
+        for (MemorySlot memorySlot : availableSlots)
         {
 
-            int sizeOfAvailableBlockOfSLot= memorySlot.getEnd()-memorySlot.getStart();
+            int sizeOfAvailableBlockOfSLot= memorySlot.getEnd()-memorySlot.getStart() + 1;
             if ((sizeOfAvailableBlockOfSLot>=p.getMemoryRequirements()))
             {
                 fit = true;
-                /*The address is set to the start adress of the certain
+                /*The address is set to the start address of the certain
                 available slot.
                 */
                 address = memorySlot.getStart();
                 break;
             }
-            counterOfPlaceInArraylistCurrenltyUsedMemorySlots++;
         }
         return address;
     }

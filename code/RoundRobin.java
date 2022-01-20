@@ -8,12 +8,17 @@ public class RoundRobin extends Scheduler {
     // Stores the currently running process's, remaining quantum time.
     private int remainingQuantumTime;
 
+    // Stores the currently running process's, currentTotalTimeRun before the process was returned by the algorithm.
+    private int lastSeenTime;
+
     public RoundRobin() {
         this.quantum = 1; // default quantum
 
         // Default values
         runningProcess = null;
         remainingQuantumTime = 0;
+        checksEveryCycleForNewProcesses = false;
+        lastSeenTime = 0;
     }
     
     public RoundRobin(int quantum) {
@@ -39,7 +44,7 @@ public class RoundRobin extends Scheduler {
             // If the running process has finished its burst time, it's halted
             else if (runningProcess.getBurstTime() == runningProcess.getPCB().getCurrentTotalTimeRun()) {
                 processes.remove(0); // Remove the running (should be the first in the ready queue) process.
-                runningProcess.waitInBackground(); // Terminate old process.
+                // Termination of old process left to CPU.
 
                 // Initialize for the next process
                 runningProcess = null;
@@ -54,31 +59,29 @@ public class RoundRobin extends Scheduler {
                 // Initialize for the next process as if one is not currently running.
                 runningProcess = null;
                 remainingQuantumTime = quantum;
+                 // The process run (assuming, left to CPU for correct usage) once, update quantum time.
+            } else if (lastSeenTime != runningProcess.getPCB().getCurrentTotalTimeRun()) { // Check if the most recently returned process was run.
+                // Assuming the process returned will run exactly for one quantum:
+                remainingQuantumTime--; // Updating current quantum.
             }
         }
 
         // There is a currently running process, and it has not finished its burst time.
         if (runningProcess != null){
-            // Assuming the process returned will run exactly for one quantum:
-            remainingQuantumTime--; // Updating current quantum.
-            incrementTimeRun(runningProcess); // Update currently running process' total time run.
+            // Update currently running process' total time run left to CPU.
+            lastSeenTime = runningProcess.getPCB().getCurrentTotalTimeRun(); // Save total time run, to update quantum time later.
             return runningProcess;
         } else { // No process running, get the next available from the readyQueue.
-            if (processes.isEmpty()){ // If the readyQueue is empty, then return null.
+            if (processes.isEmpty()){ // If the readyQueue is empty, then return null
+                lastSeenTime = -1;
                 return null;
             } else { // Setting the process next in line as running one and returning it.
                 runningProcess = processes.get(0);
-                remainingQuantumTime--; // Updating current quantum.
-                incrementTimeRun(runningProcess); // Update currently running process' total time run.
+                // Update currently running process' total time run left to CPU.
+                lastSeenTime = runningProcess.getPCB().getCurrentTotalTimeRun(); // Save total time run, to update quantum time later.
                 return runningProcess;
             }
         }
     }
 
-    /*
-     * Increments the currentTotalTimeRun accumulator of p's PCB by one.
-     */
-    private void incrementTimeRun(Process p){
-        p.getPCB().setCurrentTotalTimeRun( p.getPCB().getCurrentTotalTimeRun() + 1 );
-    }
 }

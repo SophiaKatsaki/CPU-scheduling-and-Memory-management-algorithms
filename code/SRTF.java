@@ -6,6 +6,7 @@ public class SRTF extends Scheduler {
     public SRTF() {
         // Initialization of runningProcess to default null.
         runningProcess = null;
+        checksEveryCycleForNewProcesses = true;
     }
 
     public void addProcess(Process p) {
@@ -32,7 +33,6 @@ public class SRTF extends Scheduler {
                         runningProcess = aProcess;
                     }
                 }
-                incrementTimeRun(runningProcess); // Update currently running process' total time run.
                 return runningProcess;
             }
             else { // if readyQueue is empty, then there is no process to be executed
@@ -47,10 +47,5 @@ public class SRTF extends Scheduler {
         return aProcess.getBurstTime() - aProcess.getPCB().getCurrentTotalTimeRun();
     }
 
-    /*
-     * Increments the currentTotalTimeRun accumulator of p's PCB by one.
-     */
-    private void incrementTimeRun(Process p){
-        p.getPCB().setCurrentTotalTimeRun( p.getPCB().getCurrentTotalTimeRun() + 1 );
-    }
+
 }

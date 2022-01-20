@@ -23,37 +23,37 @@ public class WorstFit extends MemoryAllocationAlgorithm {
     public int fitProcess(Process p, ArrayList<MemorySlot> currentlyUsedMemorySlots) {
         boolean fit = false;
         int address = -1;
-        /* TODO: you need to add some code here
-         * Hint: this should return the memory address where the process was
-         * loaded into if the process fits. In case the process doesn't fit, it
-         * should return -1. */
 
-        int sizeOfAvailableBlocksChosen = -1; // the size of available blocks that is currently chosen to be the
-        // place that the process will be (initialize to -1 cause we haven't
-        // find any place).
+
+        int maxAvailableSlotSize = -1; // the size of available blocks that is currently chosen to be the
+        // place that the process will be (initialize to -1 because we haven't
+        // found any place).
+
+        // Get the current available memory state.
+        ArrayList<MemorySlot> availableSlots = this.mapAvailableMemory(currentlyUsedMemorySlots);
 
         // Searching in every memory slot that is currently being used for a place that will fit the current process.
 
-        for (MemorySlot memorySlot:currentlyUsedMemorySlots) {
+        for (MemorySlot memorySlot:availableSlots) {
 
-            int sizeOfAvailableBlocks = memorySlot.getEnd() - memorySlot.getStart(); // size of available blocks
+            int sizeOfCurrentSlot = memorySlot.getEnd() - memorySlot.getStart() + 1; // size of available blocks
 
             // If the size of available blocks is enough for the current process and we don't have any address, we
             // consider the start of that available blocks as the address. So we found the first possible place and
             // it is considered as the "worst fit".
-            if ((sizeOfAvailableBlocks >= p.getMemoryRequirements()) && address==-1) {
+            if ((sizeOfCurrentSlot >= p.getMemoryRequirements()) && address==-1) {
                 fit = true;
                 address = memorySlot.getStart();
-                sizeOfAvailableBlocksChosen = sizeOfAvailableBlocks;
+                maxAvailableSlotSize = sizeOfCurrentSlot;
             }
 
             // If we are not in the "first possible place", then we found another possible place and we compare it
             // to the chosen one. If it is better, we change the "worst fit" to the newest worst fit and its address.
             if (!(address==-1)) {
-                if (sizeOfAvailableBlocks >= p.getMemoryRequirements() && sizeOfAvailableBlocks >
-                        sizeOfAvailableBlocksChosen) {
+                if (sizeOfCurrentSlot >= p.getMemoryRequirements() && sizeOfCurrentSlot >
+                        maxAvailableSlotSize) {
                     address = memorySlot.getStart();
-                    sizeOfAvailableBlocksChosen = sizeOfAvailableBlocks;
+                    maxAvailableSlotSize = sizeOfCurrentSlot;
                 }
             }
         }
