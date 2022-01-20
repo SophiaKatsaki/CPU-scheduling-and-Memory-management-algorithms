@@ -16,6 +16,13 @@ public class NextFit extends MemoryAllocationAlgorithm
         super(availableBlockSizes);
     }
 
+    /* This method decides whether a process fits in a slot or not.If it fits,
+    Next Fit algorithm chooses the first available slot that is greater than
+    or equal to the size of memory the process requires,after the last slot that
+    a process was loaded. It can be considered as a rotating First Fit algorithm,beacuse
+    they both examine slots in the same way,but usually with a different start slot.
+    */
+
     public int fitProcess(Process p, ArrayList<MemorySlot> currentlyUsedMemorySlots)
     {
 
