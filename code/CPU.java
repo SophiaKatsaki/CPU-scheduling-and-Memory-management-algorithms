@@ -47,27 +47,27 @@ public class CPU
                         previousProcess = null;
                     }
 
-                    tick(); // no-op
+                    tick();
                     continue; // No Operation
                 }
 
-                if (previousProcess==null){ //if there wasn't an executed process in the previous C.C.
+                if (previousProcess==null){ //if there wasn't an executed process before
                     tick(); // 2 C.C. required (Ready ---> Running)
                     tick();
                     currentProcess.run(); //run the current process
                 }
-                else if (previousProcess.getPCB().getPid() != currentProcess.getPCB().getPid()) { //if the previous proc
-                    previousProcess.waitInBackground();
+                else if (previousProcess.getPCB().getPid() != currentProcess.getPCB().getPid()) { //if the previous executed process is not the same with the current one
+                    previousProcess.waitInBackground(); //previous process halts (Ready or Terminated)
+                    tick(); // 2 C.C. required
                     tick();
-                    tick();
-                    currentProcess.run();
+                    currentProcess.run(); //run the current process
                 }
 
-                previousProcess = currentProcess;
+                previousProcess = currentProcess; // Update previousProcess's value
                 incrementTimeRun(currentProcess); // Update currently running process's total time run.
-                tick();
+                tick(); // process was executed for 1 C.C.
 
-            } while (!(currentProcess == null && processesList.isEmpty())); // no processes in readyQueue neither in newQueue
+            } while (!(currentProcess == null && processesList.isEmpty())); // If there are no processes in readyQueue neither in newQueue, then there's nothing else to do
         }
         else {
             do {
@@ -77,27 +77,27 @@ public class CPU
                 currentProcess = scheduler.getNextProcess(); // Request the next process from the scheduler
 
                 if (previousProcess != null){
-                    previousProcess.waitInBackground(); // Running --> Ready
+                    previousProcess.waitInBackground(); //previous process halts (Ready or Terminated)
                     previousProcess = null;
                 }
 
                 if (currentProcess == null) { //if there's no process to be executed, then do no-op
-                    tick(); // no-op
+                    tick();
                     continue; // No Operation
                 }
 
-                previousProcess = currentProcess;
+                previousProcess = currentProcess; // Update previousProcess's value
+                tick(); // 2 C.C. required
                 tick();
-                tick();
-                currentProcess.run();
+                currentProcess.run();//run the current process
 
                 while (currentProcess != null && (previousProcess.getPCB().getPid() == currentProcess.getPCB().getPid())) {
-                    tick();
                     incrementTimeRun(currentProcess);
-                    currentProcess = scheduler.getNextProcess();
+                    tick(); // process was executed for 1 C.C.
+                    currentProcess = scheduler.getNextProcess(); // Request the next process from the scheduler
                 }
 
-            } while (!(currentProcess == null && processesList.isEmpty())); // no processes in readyQueue neither in newQueue
+            } while (!(currentProcess == null && processesList.isEmpty())); // If there are no processes in readyQueue neither in newQueue, then there's nothing else to do
         }
 
 
