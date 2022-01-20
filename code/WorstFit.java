@@ -23,10 +23,7 @@ public class WorstFit extends MemoryAllocationAlgorithm {
     public int fitProcess(Process p, ArrayList<MemorySlot> currentlyUsedMemorySlots) {
         boolean fit = false;
         int address = -1;
-        /* TODO: you need to add some code here
-         * Hint: this should return the memory address where the process was
-         * loaded into if the process fits. In case the process doesn't fit, it
-         * should return -1. */
+
 
         int maxAvailableSlotSize = -1; // the size of available blocks that is currently chosen to be the
         // place that the process will be (initialize to -1 because we haven't
@@ -39,7 +36,7 @@ public class WorstFit extends MemoryAllocationAlgorithm {
 
         for (MemorySlot memorySlot:availableSlots) {
 
-            int sizeOfAvailableBlocks = memorySlot.getEnd() - memorySlot.getStart(); // size of available blocks
+            int sizeOfCurrentSlot = memorySlot.getEnd() - memorySlot.getStart() + 1; // size of available blocks
 
             // If the size of available blocks is enough for the current process and we don't have any address, we
             // consider the start of that available blocks as the address. So we found the first possible place and

@@ -53,7 +53,7 @@ public class BestFit extends MemoryAllocationAlgorithm {
                 if (sizeOfCurrentSlot >= p.getMemoryRequirements() && sizeOfCurrentSlot <
                         minAvailableSlotSize) {
                     address = memorySlot.getStart();
-                    sizeOfAvailableBlocksChosen = sizeOfAvailableBlocks;
+                    minAvailableSlotSize = sizeOfCurrentSlot;
                 }
             }
         }

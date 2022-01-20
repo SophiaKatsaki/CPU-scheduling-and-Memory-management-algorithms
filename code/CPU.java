@@ -165,11 +165,9 @@ public class CPU
         }
         return false;
     }
-    
+
     public void tick()
     {
-        /* TODO: you need to add some code here
-         * Hint: this method should run once for every CPU cycle */
         clock+=1;
     }
 }

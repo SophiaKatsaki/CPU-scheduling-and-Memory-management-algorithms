@@ -12,11 +12,15 @@ public class PC {
                 new Process(4, 3, 30)
         };
         final int[] availableBlockSizes = {15, 40, 10, 20}; // sizes in kB
-        MemoryAllocationAlgorithm algorithm = new BestFit(availableBlockSizes);
+        MemoryAllocationAlgorithm algorithm = new WorstFit(availableBlockSizes);
         MMU mmu = new MMU(availableBlockSizes, algorithm);        
         Scheduler scheduler = new FCFS();
         CPU cpu = new CPU(scheduler, mmu, processes);
         cpu.run();
+
+        System.out.println(processes[0].getTurnAroundTime());
+        System.out.println(processes[0].getWaitingTime());
+        System.out.println(processes[0].getResponseTime());
     }
 
 }

@@ -29,15 +29,20 @@ public class FCFS extends Scheduler {
      */
     
     public Process getNextProcess() {
-        // Checking if there is a process that is running now.
+        // Checking if there is a process that was running previously.
         if (!(this.currentProcess == null)) {
-            // Checking if the current total time that the current running process has been run is equal to the
+
+            // Check if (previously considered) current process is removed in the meantime.
+            if (this.currentProcess.getPCB().getPid() !=  this.processes.get(0).getPCB().getPid()){
+                currentProcess=null;
+            }
+            // Checking if the current total time that the (previously considered) current running process has been run is equal to the
             // total burst time of the current running process and if so, then that process will be removed from
             // the queue.
-            if (this.currentProcess.getPCB().getCurrentTotalTimeRun() == this.currentProcess.getBurstTime()) {
+            else if (this.currentProcess.getPCB().getCurrentTotalTimeRun() == this.currentProcess.getBurstTime()) {
+                this.currentProcess.waitInBackground();
                 removeProcess(this.currentProcess);
 
-                this.currentProcess.waitInBackground();
                 this.currentProcess = null; // default value until the next process comes
             }
         }

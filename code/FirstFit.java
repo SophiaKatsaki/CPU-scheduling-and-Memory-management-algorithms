@@ -31,7 +31,7 @@ public class FirstFit extends MemoryAllocationAlgorithm
         for (MemorySlot memorySlot : availableSlots)
         {
 
-            int sizeOfAvailableBlockOfSLot= memorySlot.getEnd()-memorySlot.getStart();
+            int sizeOfAvailableBlockOfSLot= memorySlot.getEnd()-memorySlot.getStart() + 1;
             if ((sizeOfAvailableBlockOfSLot>=p.getMemoryRequirements()))
             {
                 fit = true;
