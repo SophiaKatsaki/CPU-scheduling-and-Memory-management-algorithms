@@ -2,11 +2,11 @@ import java.util.ArrayList;
 
 public class NextFit extends MemoryAllocationAlgorithm
 {
-    /*this variable stores the place of the last input of a process to the
+    /*this variable stores the beginning address of the last fit of a process to the
     memory.It is by default set to -1, because the first time Next Fit
     executes, it behaves exactly like the First Fit algorithm, and therefore
     it starts traversing the available memory slots starting from the first place
-    of the arraylist.
+    of the memory.
     */
     private int last=-1;
 
@@ -42,28 +42,43 @@ public class NextFit extends MemoryAllocationAlgorithm
         */
         int numberOfExecution=1;
 
-        /* We begin from the next slot that is available after the last slot that the previous
-        process was loaded*/
-        int indexOfCurrentSlot=(last+1)%currentlyUsedMemorySlots.size();
+        // Get the current available memory state.
+        ArrayList<MemorySlot> availableSlots = this.mapAvailableMemory(currentlyUsedMemorySlots);
 
-        while(numberOfExecution<=currentlyUsedMemorySlots.size())
+        /* We begin from the next slot that is available after the last slot that the previous
+           process was loaded.
+           Search for that slot.
+           Initialize to 0, if it isn't found, it is presumed to be after the end, so in the beginning.
+         */
+        int indexOfCurrentSlot = 0;
+        for (int i = 0; i < availableSlots.size(); i++){
+            if (availableSlots.get(i).getStart() > last){
+                indexOfCurrentSlot = i;
+                break;
+            }
+        }
+
+        while(numberOfExecution<=availableSlots.size())
         {
-            int sizeOfAvailableBlockOfSLot = currentlyUsedMemorySlots.get(indexOfCurrentSlot).getEnd() - currentlyUsedMemorySlots.get(indexOfCurrentSlot).getStart();
-            if (sizeOfAvailableBlockOfSLot >= p.getMemoryRequirements())
+            int sizeOfAvailableMemoryOfSlot = availableSlots.get(indexOfCurrentSlot).getEnd() - availableSlots.get(indexOfCurrentSlot).getStart() + 1;
+            if (sizeOfAvailableMemoryOfSlot >= p.getMemoryRequirements())
             {
                 fit = true;
 
                 /*The address is set to the start address of the certain
                 available slot.
                 */
-                address = currentlyUsedMemorySlots.get(indexOfCurrentSlot).getStart();
+                address = availableSlots.get(indexOfCurrentSlot).getStart();
 
-                last = indexOfCurrentSlot;
+                /*
+                    In the "last" attribute, the begging address of the last fitted memory slot is stored.
+                 */
+                last = address;
                 break;
             }
 
             //updating the index before next execution
-            indexOfCurrentSlot = (indexOfCurrentSlot + 1) % currentlyUsedMemorySlots.size();
+            indexOfCurrentSlot = (indexOfCurrentSlot + 1) % availableSlots.size();
 
             //updating the number of times that Next Fit was executed
             numberOfExecution++;
