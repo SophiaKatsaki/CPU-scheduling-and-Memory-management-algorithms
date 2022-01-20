@@ -60,6 +60,7 @@ public class Process
                 this.pcb.setState(ProcessState.TERMINATED, CPU.clock);
             }
 
+
             /*Else, the state of
             the process is set to READY,once again.*/
 
