@@ -17,8 +17,18 @@ public abstract class Scheduler {
      * of processes that are candidates for execution. Common for all
      * schedulers. */
     public void removeProcess(Process p) {
-        /* TODO: you need to add some code here */
-        
+        // Searching the processes list for the process to be removed.
+        for(int i = 0; i < processes.size(); i++){
+            Process currentProcess = processes.get(i);
+            // A process is uniquely identified by its assigned pid.
+           if (currentProcess.getPCB().getPid() == p.getPCB().getPid()){
+               processes.remove(i);
+               // The target process has been removed, stop the search and return.
+               break;
+           }
+        }
+
+        // If it is not found, nothing will happen.
     }
     
     /* the getNextProcess() method should return the process that should
