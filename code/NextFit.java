@@ -10,6 +10,7 @@ public class NextFit extends MemoryAllocationAlgorithm
     */
     private int last=-1;
 
+
     public NextFit(int[] availableBlockSizes)
     {
         super(availableBlockSizes);

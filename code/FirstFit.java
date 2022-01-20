@@ -11,7 +11,7 @@ public class FirstFit extends MemoryAllocationAlgorithm
     {
         boolean fit = false;
         /*The address is by default set to -1, in case the process does not fit
-        in any of the slots in the memory slots.
+        in any of the slots in the memory slots. 
         */
         int address = -1;
 
