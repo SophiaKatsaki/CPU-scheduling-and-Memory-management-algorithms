@@ -80,7 +80,7 @@ public class Process
     public double getWaitingTime()
     {
      /* The waiting time of a process is the total time spent by the process
-     waiting for CPU.It is calculated by substracting the burst time
+     waiting for CPU.It is calculated by subtracting the burst time
      *of the certain process from its turnaround time*/
 
         double waitingTime= getTurnAroundTime()-this.burstTime;
@@ -90,7 +90,7 @@ public class Process
     public double getResponseTime()
     {
         /* The response time of a process is the time spent between the arrival
-        * of the process and its first execution. It is calculated by substracting
+        * of the process and its first execution. It is calculated by subtracting
         * the arrival time of the process from the time of its first execution*/
 
         double responseTime=getPCB().getStartTimes().get(0)-this.arrivalTime;
@@ -102,7 +102,7 @@ public class Process
     {
         /* The turn around time of a process is the time interval from the time of
         * arrival of the process to the time of the completion of said process. It is
-        * calculated by substracting the arrival time of the process from the time that
+        * calculated by subtracting the arrival time of the process from the time that
         * the certain process was completed. Here, turnaround time is by default set
         * to -1, in case the process that we want to calculate its turn around time,
         * is not completed yet, and therefore its state is not equal to TERMINATED.
