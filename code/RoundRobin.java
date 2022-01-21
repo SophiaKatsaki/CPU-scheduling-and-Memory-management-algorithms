@@ -40,30 +40,40 @@ public class RoundRobin extends Scheduler {
             if (processes.isEmpty() || runningProcess.getPCB().getPid() != processes.get(0).getPCB().getPid()){
                 runningProcess = null;
                 remainingQuantumTime = quantum;
-            }
-            // If the running process has finished its burst time, it's halted
-            else if (runningProcess.getBurstTime() == runningProcess.getPCB().getCurrentTotalTimeRun()) {
-                processes.remove(0); // Remove the running (should be the first in the ready queue) process.
-                // Termination of old process left to CPU.
+            } else {
+                // Check if the most recently returned process was run.
+                // If it was, update remaining quantum time.
+                if (lastSeenTime != runningProcess.getPCB().getCurrentTotalTimeRun()){
+                    // Assuming the process returned will run exactly for one quantum:
+                    remainingQuantumTime--; // Updating current quantum.
+                }
 
-                // Initialize for the next process
-                runningProcess = null;
-                remainingQuantumTime = quantum;
-            }
-            // The running process has completely depleted its quantum time. It is moved to the end of the queue and
-            // removed from being the current one.
-            else if (remainingQuantumTime == 0){
-                processes.remove(0); // Remove the running (should be the first in the ready queue) process.
-                processes.add(runningProcess); // Placing the currently running process in the end of the queue.
+                // If the running process has finished its burst time, it's halted
+                if (runningProcess.getBurstTime() == runningProcess.getPCB().getCurrentTotalTimeRun()) {
+                    runningProcess.waitInBackground(); // Termination of old process.
+                    processes.remove(0); // Remove the running (should be the first in the ready queue) process.
 
-                // Initialize for the next process as if one is not currently running.
-                runningProcess = null;
-                remainingQuantumTime = quantum;
-                 // The process run (assuming, left to CPU for correct usage) once, update quantum time.
-            } else if (lastSeenTime != runningProcess.getPCB().getCurrentTotalTimeRun()) { // Check if the most recently returned process was run.
-                // Assuming the process returned will run exactly for one quantum:
-                remainingQuantumTime--; // Updating current quantum.
+
+                    // Initialize for the next process
+                    runningProcess = null;
+                    remainingQuantumTime = quantum;
+                }
+                // The running process has completely depleted its quantum time. It is moved to the end of the queue and
+                // removed from being the current one.
+                else if (remainingQuantumTime == 0) {
+                    processes.remove(0); // Remove the running (should be the first in the ready queue) process.
+                    processes.add(runningProcess); // Placing the currently running process in the end of the queue.
+
+                    // Initialize for the next process as if one is not currently running.
+                    runningProcess = null;
+                    remainingQuantumTime = quantum;
+                    // The process run (assuming, left to CPU for correct usage) once, update quantum time.
+                }
             }
+        } else {
+            // Current process is null only if it is the first time run or if null was returned the last call.
+            // Reset remainingQuantumTime in the default value.
+            remainingQuantumTime = quantum;
         }
 
         // There is a currently running process, and it has not finished its burst time.
@@ -73,7 +83,7 @@ public class RoundRobin extends Scheduler {
             return runningProcess;
         } else { // No process running, get the next available from the readyQueue.
             if (processes.isEmpty()){ // If the readyQueue is empty, then return null
-                lastSeenTime = -1;
+                lastSeenTime = 0;
                 return null;
             } else { // Setting the process next in line as running one and returning it.
                 runningProcess = processes.get(0);
