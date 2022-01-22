@@ -33,8 +33,8 @@ public class FCFS extends Scheduler {
         if (!(this.currentProcess == null)) {
 
             // Check if (previously considered) current process is removed in the meantime.
-            if (this.currentProcess.getPCB().getPid() !=  this.processes.get(0).getPCB().getPid()){
-                currentProcess=null;
+            if (this.currentProcess.getPCB().getPid() !=  this.processes.get(0).getPCB().getPid()) {
+                this.currentProcess = null;
             }
             // Checking if the current total time that the (previously considered) current running process has been run is equal to the
             // total burst time of the current running process and if so, then that process will be removed from
