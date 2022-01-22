@@ -73,8 +73,7 @@ public class CPU
                 tick(); // process was executed for 1 C.C.
 
             } while (!(currentProcess == null && processesList.isEmpty())); // If there are no processes in readyQueue neither in newQueue, then there's nothing else to do
-        }
-        else {
+        } else {
             do {
 
                 if(currentProcess != null && currentProcess.getBurstTime() == currentProcess.getPCB().getCurrentTotalTimeRun()){

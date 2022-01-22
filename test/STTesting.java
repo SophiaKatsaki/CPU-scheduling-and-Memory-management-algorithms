@@ -633,7 +633,7 @@ public class STTesting {
                 new Process(0, 5, 10)
         };
         final int[] availableBlockSizes = {15, 10, 100, 10}; // sizes in kB
-        MemoryAllocationAlgorithm algorithm = new BestFit(availableBlockSizes);
+        MemoryAllocationAlgorithm algorithm = new FirstFit(availableBlockSizes);
         MMU mmu = new MMU(availableBlockSizes, algorithm);
         Scheduler scheduler = new RoundRobin();
         CPU cpu = new CPU(scheduler, mmu, processes);
@@ -702,7 +702,7 @@ public class STTesting {
 
     @Test
     public void RR_test3(){
-        // FirstFit algorithm for memory.
+        // BestFit algorithm for memory.
         // Same arrival time.
         // Big memory requirements, so the processes cannot fit in.
         final Process[] processes = {
@@ -738,5 +738,46 @@ public class STTesting {
         assertEquals(-1,processes[3].getTurnAroundTime());
         assertEquals(-1,processes[3].getWaitingTime());
         assertEquals(-1,processes[3].getResponseTime());
+    }
+
+    @Test
+    public void RR_test4(){
+        // FirstFit algorithm for memory.
+        // Different arrival time.
+        final Process[] processes = {
+                // Process parameters are: arrivalTime, burstTime, memoryRequirements (kB)
+                new Process(0, 5, 5),
+                new Process(1, 6, 9),
+                new Process(2, 3, 5),
+                new Process(3, 1, 5),
+                new Process(4, 5, 12),
+                new Process(6, 4, 10)
+        };
+        final int[] availableBlockSizes = {30, 43, 10, 25, 8, 33}; // sizes in kB
+        MemoryAllocationAlgorithm algorithm = new FirstFit(availableBlockSizes);
+        MMU mmu = new MMU(availableBlockSizes, algorithm);
+        Scheduler scheduler = new RoundRobin();
+        CPU cpu = new CPU(scheduler, mmu, processes);
+        cpu.run();
+
+        // Process 1
+        assertEquals(69,processes[0].getTurnAroundTime());
+        assertEquals(64,processes[0].getWaitingTime());
+        assertEquals(7,processes[0].getResponseTime());
+
+        // Process 2
+        assertEquals(77,processes[1].getTurnAroundTime());
+        assertEquals(71,processes[1].getWaitingTime());
+        assertEquals(10,processes[1].getResponseTime());
+
+        // Process 3
+        assertEquals(46,processes[2].getTurnAroundTime());
+        assertEquals(43,processes[2].getWaitingTime());
+        assertEquals(12,processes[2].getResponseTime());
+
+        // Process 4
+        assertEquals(15,processes[3].getTurnAroundTime());
+        assertEquals(14,processes[3].getWaitingTime());
+        assertEquals(14,processes[3].getResponseTime());
     }
 }
