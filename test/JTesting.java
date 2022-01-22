@@ -220,12 +220,9 @@ public class JTesting {
         CPU cpu = new CPU(scheduler, mmu, processes);
         cpu.run();
 
-        // TODO: Check again: Implementation quirk of CPU: A process that has finished an in that exact moment
-        // TODO, a new process arrives, the finished one waits for the new to begin to be marked as finished.
-
         // Process 1
-        assertEquals(6,processes[0].getTurnAroundTime());
-        assertEquals(4,processes[0].getWaitingTime());
+        assertEquals(5,processes[0].getTurnAroundTime());
+        assertEquals(3,processes[0].getWaitingTime());
         assertEquals(3,processes[0].getResponseTime());
 
         // Process 2
