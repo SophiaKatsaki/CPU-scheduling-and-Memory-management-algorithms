@@ -11,7 +11,7 @@ public class ATesting {
     }
 
     @Test
-    public void CanNotFitAtMemory(){
+    public void CanNotFitInMemory(){
         final Process[] processes = {
                 // Process parameters are: arrivalTime, burstTime, memoryRequirements (kB)
                 new Process(0, 5, 100),
