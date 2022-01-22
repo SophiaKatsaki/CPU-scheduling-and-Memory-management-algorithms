@@ -34,10 +34,15 @@ public class CPU
         sortProcesses(processesList);
 
         Process previousProcess = null; // The executed process of the previous C.C. (in case it doesn't exist, its value is null)
-        Process currentProcess; // The executed process of the current C.C. (in case it doesn't exist, its value is null)
+        Process currentProcess = null; // The executed process of the current C.C. (in case it doesn't exist, its value is null)
 
         if(scheduler.getChecksEveryCycleForNewProcesses()){ //if the CPU requests for a process in every Clock Cycle (C.C.)
             do {
+
+                if(currentProcess != null && currentProcess.getBurstTime() == currentProcess.getPCB().getCurrentTotalTimeRun()){
+                    currentProcess.waitInBackground(); // Running --> Terminated
+                }
+
                 loadProcessesIntoMemory(); // load all the processes that have come until this C.C.
 
                 currentProcess = scheduler.getNextProcess(); // Request the next process from the scheduler
@@ -71,6 +76,10 @@ public class CPU
         }
         else {
             do {
+
+                if(currentProcess != null && currentProcess.getBurstTime() == currentProcess.getPCB().getCurrentTotalTimeRun()){
+                    currentProcess.waitInBackground(); // Running --> Terminated
+                }
 
                 loadProcessesIntoMemory(); // load all the processes that have come until this C.C.
 

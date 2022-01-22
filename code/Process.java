@@ -83,8 +83,10 @@ public class Process
      waiting for CPU.It is calculated by subtracting the burst time
      *of the certain process from its turnaround time*/
 
-        double waitingTime= getTurnAroundTime()-this.burstTime;
-        return waitingTime;
+        if(getPCB().getState().equals(ProcessState.TERMINATED)){
+            return getTurnAroundTime()-this.burstTime;
+        }
+        return -1; // If a process didn't run at all, then return -1
     }
 
     public double getResponseTime()
@@ -93,8 +95,10 @@ public class Process
         * of the process and its first execution. It is calculated by subtracting
         * the arrival time of the process from the time of its first execution*/
 
-        double responseTime=getPCB().getStartTimes().get(0)-this.arrivalTime;
-        return responseTime;
+        if(getPCB().getState().equals(ProcessState.TERMINATED)){
+            return getPCB().getStartTimes().get(0)-this.arrivalTime;
+        }
+        return -1; // If a process didn't run at all, then return -1
     }
 
 
