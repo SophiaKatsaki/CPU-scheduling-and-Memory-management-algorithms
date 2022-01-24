@@ -1,9 +1,6 @@
-
 public class PC {
 
     public static void main(String[] args) {
-        /* TODO: You may change this method to perform any tests you like */
-        
         final Process[] processes = {
                 // Process parameters are: arrivalTime, burstTime, memoryRequirements (kB)
                 new Process(0, 5, 10),
@@ -18,9 +15,35 @@ public class PC {
         CPU cpu = new CPU(scheduler, mmu, processes);
         cpu.run();
 
-        System.out.println(processes[0].getTurnAroundTime());
-        System.out.println(processes[0].getWaitingTime());
-        System.out.println(processes[0].getResponseTime());
+        // Process 1
+        System.out.println("For process with id=1 we have:");
+        System.out.println("Turn Around Time = " + processes[0].getTurnAroundTime());
+        System.out.println("Waiting Time = " + processes[0].getWaitingTime());
+        System.out.println("Response Time = " + processes[0].getResponseTime());
+
+        System.out.println();
+
+        // Process 2
+        System.out.println("For process with id=2 we have:");
+        System.out.println("Turn Around Time = " + processes[1].getTurnAroundTime());
+        System.out.println("Waiting Time = " + processes[1].getWaitingTime());
+        System.out.println("Response Time = " + processes[1].getResponseTime());
+
+        System.out.println();
+
+        // Process 3
+        System.out.println("For process with id=3 we have:");
+        System.out.println("Turn Around Time = " + processes[2].getTurnAroundTime());
+        System.out.println("Waiting Time = " + processes[2].getWaitingTime());
+        System.out.println("Response Time = " + processes[2].getResponseTime());
+
+        System.out.println();
+
+        // Process 4
+        System.out.println("For process with id=4 we have:");
+        System.out.println("Turn Around Time = " + processes[3].getTurnAroundTime());
+        System.out.println("Waiting Time = " + processes[3].getWaitingTime());
+        System.out.println("Response Time = " + processes[3].getResponseTime());
     }
 
 }
