@@ -4,10 +4,10 @@ import org.junit.jupiter.api.Test;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
 /**
- * 13 tests with the FCFS schedule algorithm to some different occasions.
+ * 21 tests with the FCFS schedule algorithm to some different occasions.
  *
- * The first 4 use FirstFit algorithm as the memory allocation algorithm, then 2 use NextFit, then 5 use
- * BestFit and the last 2 use WorstFit.
+ * The first 6 use FirstFit algorithm as the memory allocation algorithm, then 4 use NextFit, then 7 use
+ * BestFit and the last 4 use WorstFit.
  */
 
 public class FCFSTesting {
@@ -178,6 +178,94 @@ public class FCFSTesting {
     }
 
     /**
+     * FirstFit algorithm as the memory allocation algorithm.
+     * Small memory requirements (processes can fit in).
+     * Different arrival time for each process.
+     * Convoy Effect.
+     */
+
+    @Test
+    public void FFtest5() {
+        final Process[] processes = {
+                // Process parameters are: arrivalTime, burstTime, memoryRequirements (kB)
+                new Process(1, 27, 10),
+                new Process(9, 3, 15),
+                new Process(10, 2, 32),
+                new Process(12, 1, 25)
+        };
+        final int[] availableBlockSizes = {60,35,42,15}; // sizes in kB
+        MemoryAllocationAlgorithm algorithm = new FirstFit(availableBlockSizes);
+        MMU mmu = new MMU(availableBlockSizes, algorithm);
+        Scheduler scheduler = new FCFS();
+        CPU cpu = new CPU(scheduler, mmu, processes);
+        cpu.run();
+
+        // Process 1
+        assertEquals(30.0,processes[0].getTurnAroundTime());
+        assertEquals(3.0,processes[0].getWaitingTime());
+        assertEquals(3.0,processes[0].getResponseTime());
+
+        // Process 2
+        assertEquals(30.0,processes[1].getTurnAroundTime());
+        assertEquals(27.0,processes[1].getWaitingTime());
+        assertEquals(27.0,processes[1].getResponseTime());
+
+        // Process 3
+        assertEquals(33.0,processes[2].getTurnAroundTime());
+        assertEquals(31.0,processes[2].getWaitingTime());
+        assertEquals(31.0,processes[2].getResponseTime());
+
+        // Process 4
+        assertEquals(34.0,processes[3].getTurnAroundTime());
+        assertEquals(33.0,processes[3].getWaitingTime());
+        assertEquals(33.0,processes[3].getResponseTime());
+    }
+
+    /**
+     * FirstFit algorithm as the memory allocation algorithm.
+     * Big memory requirements (processes cannot fit in).
+     * Same arrival time for each process.
+     */
+
+    @Test
+    public void FFtest6() {
+        final Process[] processes = {
+                // Process parameters are: arrivalTime, burstTime, memoryRequirements (kB)
+                new Process(2, 3, 40),
+                new Process(2, 5, 30),
+                new Process(2, 9, 32),
+                new Process(2, 4, 55)
+        };
+        final int[] availableBlockSizes = {25,15,24,17}; // sizes in kB
+        MemoryAllocationAlgorithm algorithm = new FirstFit(availableBlockSizes);
+        MMU mmu = new MMU(availableBlockSizes, algorithm);
+        Scheduler scheduler = new FCFS();
+        CPU cpu = new CPU(scheduler, mmu, processes);
+        cpu.run();
+
+        // Process 1
+        assertEquals(-1.0,processes[0].getTurnAroundTime());
+        assertEquals(-1.0,processes[0].getWaitingTime());
+        assertEquals(-1.0,processes[0].getResponseTime());
+
+        // Process 2
+        assertEquals(-1.0,processes[0].getTurnAroundTime());
+        assertEquals(-1.0,processes[0].getWaitingTime());
+        assertEquals(-1.0,processes[0].getResponseTime());
+
+        // Process 3
+        assertEquals(-1.0,processes[0].getTurnAroundTime());
+        assertEquals(-1.0,processes[0].getWaitingTime());
+        assertEquals(-1.0,processes[0].getResponseTime());
+
+        // Process 4
+        assertEquals(-1.0,processes[0].getTurnAroundTime());
+        assertEquals(-1.0,processes[0].getWaitingTime());
+        assertEquals(-1.0,processes[0].getResponseTime());
+
+    }
+
+    /**
      * NextFit algorithm as the memory allocation algorithm.
      * Small memory requirements (processes can fit in).
      * Same arrival time for the processes.
@@ -249,6 +337,94 @@ public class FCFSTesting {
         assertEquals(26,processes[3].getTurnAroundTime());
         assertEquals(22,processes[3].getWaitingTime());
         assertEquals(22,processes[3].getResponseTime());
+    }
+
+    /**
+     * NextFit algorithm as the memory allocation algorithm.
+     * Small memory requirements (processes can fit in).
+     * Different arrival time for each process.
+     * Convoy Effect.
+     */
+
+    @Test
+    public void NFtest3() {
+        final Process[] processes = {
+                // Process parameters are: arrivalTime, burstTime, memoryRequirements (kB)
+                new Process(1, 27, 10),
+                new Process(9, 3, 15),
+                new Process(10, 2, 32),
+                new Process(12, 1, 25)
+        };
+        final int[] availableBlockSizes = {60,35,42,15}; // sizes in kB
+        MemoryAllocationAlgorithm algorithm = new NextFit(availableBlockSizes);
+        MMU mmu = new MMU(availableBlockSizes, algorithm);
+        Scheduler scheduler = new FCFS();
+        CPU cpu = new CPU(scheduler, mmu, processes);
+        cpu.run();
+
+        // Process 1
+        assertEquals(30.0,processes[0].getTurnAroundTime());
+        assertEquals(3.0,processes[0].getWaitingTime());
+        assertEquals(3.0,processes[0].getResponseTime());
+
+        // Process 2
+        assertEquals(30.0,processes[1].getTurnAroundTime());
+        assertEquals(27.0,processes[1].getWaitingTime());
+        assertEquals(27.0,processes[1].getResponseTime());
+
+        // Process 3
+        assertEquals(33.0,processes[2].getTurnAroundTime());
+        assertEquals(31.0,processes[2].getWaitingTime());
+        assertEquals(31.0,processes[2].getResponseTime());
+
+        // Process 4
+        assertEquals(34.0,processes[3].getTurnAroundTime());
+        assertEquals(33.0,processes[3].getWaitingTime());
+        assertEquals(33.0,processes[3].getResponseTime());
+    }
+
+    /**
+     * NextFit algorithm as the memory allocation algorithm.
+     * Big memory requirements (processes cannot fit in).
+     * Same arrival time for each process.
+     */
+
+    @Test
+    public void NFtest4() {
+        final Process[] processes = {
+                // Process parameters are: arrivalTime, burstTime, memoryRequirements (kB)
+                new Process(2, 3, 40),
+                new Process(2, 5, 30),
+                new Process(2, 9, 32),
+                new Process(2, 4, 55)
+        };
+        final int[] availableBlockSizes = {25,15,24,17}; // sizes in kB
+        MemoryAllocationAlgorithm algorithm = new NextFit(availableBlockSizes);
+        MMU mmu = new MMU(availableBlockSizes, algorithm);
+        Scheduler scheduler = new FCFS();
+        CPU cpu = new CPU(scheduler, mmu, processes);
+        cpu.run();
+
+        // Process 1
+        assertEquals(-1.0,processes[0].getTurnAroundTime());
+        assertEquals(-1.0,processes[0].getWaitingTime());
+        assertEquals(-1.0,processes[0].getResponseTime());
+
+        // Process 2
+        assertEquals(-1.0,processes[0].getTurnAroundTime());
+        assertEquals(-1.0,processes[0].getWaitingTime());
+        assertEquals(-1.0,processes[0].getResponseTime());
+
+        // Process 3
+        assertEquals(-1.0,processes[0].getTurnAroundTime());
+        assertEquals(-1.0,processes[0].getWaitingTime());
+        assertEquals(-1.0,processes[0].getResponseTime());
+
+        // Process 4
+        assertEquals(-1.0,processes[0].getTurnAroundTime());
+        assertEquals(-1.0,processes[0].getWaitingTime());
+        assertEquals(-1.0,processes[0].getResponseTime());
+
     }
 
     /**
@@ -444,6 +620,94 @@ public class FCFSTesting {
     }
 
     /**
+     * BestFit algorithm as the memory allocation algorithm.
+     * Small memory requirements (processes can fit in).
+     * Different arrival time for each process.
+     * Convoy Effect.
+     */
+
+    @Test
+    public void BFtest6() {
+        final Process[] processes = {
+                // Process parameters are: arrivalTime, burstTime, memoryRequirements (kB)
+                new Process(1, 27, 10),
+                new Process(9, 3, 15),
+                new Process(10, 2, 32),
+                new Process(12, 1, 25)
+        };
+        final int[] availableBlockSizes = {60,35,42,15}; // sizes in kB
+        MemoryAllocationAlgorithm algorithm = new BestFit(availableBlockSizes);
+        MMU mmu = new MMU(availableBlockSizes, algorithm);
+        Scheduler scheduler = new FCFS();
+        CPU cpu = new CPU(scheduler, mmu, processes);
+        cpu.run();
+
+        // Process 1
+        assertEquals(30.0,processes[0].getTurnAroundTime());
+        assertEquals(3.0,processes[0].getWaitingTime());
+        assertEquals(3.0,processes[0].getResponseTime());
+
+        // Process 2
+        assertEquals(30.0,processes[1].getTurnAroundTime());
+        assertEquals(27.0,processes[1].getWaitingTime());
+        assertEquals(27.0,processes[1].getResponseTime());
+
+        // Process 3
+        assertEquals(33.0,processes[2].getTurnAroundTime());
+        assertEquals(31.0,processes[2].getWaitingTime());
+        assertEquals(31.0,processes[2].getResponseTime());
+
+        // Process 4
+        assertEquals(34.0,processes[3].getTurnAroundTime());
+        assertEquals(33.0,processes[3].getWaitingTime());
+        assertEquals(33.0,processes[3].getResponseTime());
+    }
+
+    /**
+     * BestFit algorithm as the memory allocation algorithm.
+     * Big memory requirements (processes cannot fit in).
+     * Same arrival time for each process.
+     */
+
+    @Test
+    public void BFtest7() {
+        final Process[] processes = {
+                // Process parameters are: arrivalTime, burstTime, memoryRequirements (kB)
+                new Process(2, 3, 40),
+                new Process(2, 5, 30),
+                new Process(2, 9, 32),
+                new Process(2, 4, 55)
+        };
+        final int[] availableBlockSizes = {25,15,24,17}; // sizes in kB
+        MemoryAllocationAlgorithm algorithm = new BestFit(availableBlockSizes);
+        MMU mmu = new MMU(availableBlockSizes, algorithm);
+        Scheduler scheduler = new FCFS();
+        CPU cpu = new CPU(scheduler, mmu, processes);
+        cpu.run();
+
+        // Process 1
+        assertEquals(-1.0,processes[0].getTurnAroundTime());
+        assertEquals(-1.0,processes[0].getWaitingTime());
+        assertEquals(-1.0,processes[0].getResponseTime());
+
+        // Process 2
+        assertEquals(-1.0,processes[0].getTurnAroundTime());
+        assertEquals(-1.0,processes[0].getWaitingTime());
+        assertEquals(-1.0,processes[0].getResponseTime());
+
+        // Process 3
+        assertEquals(-1.0,processes[0].getTurnAroundTime());
+        assertEquals(-1.0,processes[0].getWaitingTime());
+        assertEquals(-1.0,processes[0].getResponseTime());
+
+        // Process 4
+        assertEquals(-1.0,processes[0].getTurnAroundTime());
+        assertEquals(-1.0,processes[0].getWaitingTime());
+        assertEquals(-1.0,processes[0].getResponseTime());
+
+    }
+
+    /**
      * WorstFir algorithm as the memory allocation algorithm.
      * Small memory requirements for some processes (processes can fit in) and big memory requirements for the
      * others (processes cannot fit in).
@@ -490,7 +754,7 @@ public class FCFSTesting {
     /**
      * WorstFit algorithm as the memory allocation algorithm.
      * Small memory requirements (processes can fit in).
-     * Same arrival time for each process.
+     * Same arrival time for the processes.
      */
 
     @Test
@@ -528,5 +792,93 @@ public class FCFSTesting {
         assertEquals(26,processes[3].getTurnAroundTime());
         assertEquals(22,processes[3].getWaitingTime());
         assertEquals(22,processes[3].getResponseTime());
+    }
+
+    /**
+     * WorstFit algorithm as the memory allocation algorithm.
+     * Small memory requirements (processes can fit in).
+     * Different arrival time for each process.
+     * Convoy Effect.
+     */
+
+    @Test
+    public void WFtest3() {
+        final Process[] processes = {
+                        // Process parameters are: arrivalTime, burstTime, memoryRequirements (kB)
+                        new Process(1, 27, 10),
+                        new Process(9, 3, 15),
+                        new Process(10, 2, 32),
+                        new Process(12, 1, 25)
+                };
+        final int[] availableBlockSizes = {60,35,42,15}; // sizes in kB
+        MemoryAllocationAlgorithm algorithm = new WorstFit(availableBlockSizes);
+        MMU mmu = new MMU(availableBlockSizes, algorithm);
+        Scheduler scheduler = new FCFS();
+        CPU cpu = new CPU(scheduler, mmu, processes);
+        cpu.run();
+
+        // Process 1
+        assertEquals(30.0,processes[0].getTurnAroundTime());
+        assertEquals(3.0,processes[0].getWaitingTime());
+        assertEquals(3.0,processes[0].getResponseTime());
+
+        // Process 2
+        assertEquals(30.0,processes[1].getTurnAroundTime());
+        assertEquals(27.0,processes[1].getWaitingTime());
+        assertEquals(27.0,processes[1].getResponseTime());
+
+        // Process 3
+        assertEquals(33.0,processes[2].getTurnAroundTime());
+        assertEquals(31.0,processes[2].getWaitingTime());
+        assertEquals(31.0,processes[2].getResponseTime());
+
+        // Process 4
+        assertEquals(34.0,processes[3].getTurnAroundTime());
+        assertEquals(33.0,processes[3].getWaitingTime());
+        assertEquals(33.0,processes[3].getResponseTime());
+    }
+
+    /**
+     * WorstFit algorithm as the memory allocation algorithm.
+     * Big memory requirements (processes cannot fit in).
+     * Same arrival time for each process.
+     */
+
+    @Test
+    public void WFtest4() {
+        final Process[] processes = {
+                        // Process parameters are: arrivalTime, burstTime, memoryRequirements (kB)
+                        new Process(2, 3, 40),
+                        new Process(2, 5, 30),
+                        new Process(2, 9, 32),
+                        new Process(2, 4, 55)
+                };
+        final int[] availableBlockSizes = {25,15,24,17}; // sizes in kB
+        MemoryAllocationAlgorithm algorithm = new WorstFit(availableBlockSizes);
+        MMU mmu = new MMU(availableBlockSizes, algorithm);
+        Scheduler scheduler = new FCFS();
+        CPU cpu = new CPU(scheduler, mmu, processes);
+        cpu.run();
+
+        // Process 1
+        assertEquals(-1.0,processes[0].getTurnAroundTime());
+        assertEquals(-1.0,processes[0].getWaitingTime());
+        assertEquals(-1.0,processes[0].getResponseTime());
+
+        // Process 2
+        assertEquals(-1.0,processes[0].getTurnAroundTime());
+        assertEquals(-1.0,processes[0].getWaitingTime());
+        assertEquals(-1.0,processes[0].getResponseTime());
+
+        // Process 3
+        assertEquals(-1.0,processes[0].getTurnAroundTime());
+        assertEquals(-1.0,processes[0].getWaitingTime());
+        assertEquals(-1.0,processes[0].getResponseTime());
+
+        // Process 4
+        assertEquals(-1.0,processes[0].getTurnAroundTime());
+        assertEquals(-1.0,processes[0].getWaitingTime());
+        assertEquals(-1.0,processes[0].getResponseTime());
+
     }
 }
