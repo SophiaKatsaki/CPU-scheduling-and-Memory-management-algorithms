@@ -6,6 +6,8 @@ public class CPU
     private Scheduler scheduler;
     private MMU mmu;
     private Process[] processes;
+    private int currentProcess;
+
     private ArrayList<Process> processesList;
     
     public CPU(Scheduler scheduler, MMU mmu, Process[] processes)
@@ -13,11 +15,11 @@ public class CPU
         this.scheduler = scheduler;
         this.mmu = mmu;
         this.processes = processes;
-        this.processesList = new ArrayList<>();
     }
 
     public void run()
     {
+        this.processesList = new ArrayList<>();
         //C.C. = Clock Cycle
 
         // Inserting the given processes in an Arraylist
